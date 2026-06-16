@@ -1,0 +1,9 @@
+# 參考用的 clone 範例 repo（不屬於本專案）
+QA-assistant/
+
+# 根目錄的原始截圖來源（已複製進 assets/）
+/*.png
+
+# 暫存
+.DS_Store
+Thumbs.db
