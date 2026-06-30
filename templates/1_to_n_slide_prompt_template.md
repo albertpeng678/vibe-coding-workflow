@@ -18,7 +18,7 @@
 ### 1. 執行路徑規劃 (Planning & Chaining Phase)
 *   **第一步（分析主產品）**：分析 `<input_documents>` 的 `spec.md` 盤點其所附屬的主產品，定位主產品的角色與核心價值。
 *   **第二步（大盤北極星共識 - 5-Agent Consensus）**：若輸入文件難以辨識主產品或指標，啟動 5 隻虛擬 Agent 的共識討論，對齊競品特點並定調大盤北極星指標。
-*   **第三步（草擬簡報大綱）**：依照「指標貫穿全場」故事線與「資料視覺化」佈局規則，草擬 7 頁簡報大綱，並強制在主產品所有提及處標註 `[⚠️ 請在此處更新您正確的主產品名稱及指標]`。
+*   **第三步（草擬簡報大綱）**：依照「指標貫穿全場」故事線與「資料視覺化」佈局規則，草擬 7 頁簡報大綱。**特別注意：Slide 5 必須被定義為使用者互動流程圖**。
 *   **第四步（雙重嚴苛稽核官審查 - Multi-Agent Audit）**：對每一頁簡報與指標，執行下方的「雙重稽核官關卡」與指標規則。
 *   **第五步（最終輸出）**：只有在每一頁簡報同時通過雙重稽核官的 **各三個綠燈 (🟢🟢🟢) 共六個綠燈** 審查後，方可輸出最終的 Gamma Prompt。
 
@@ -33,8 +33,8 @@
 
 #### 👤 PM 總監稽核官 (PM Director Audit Officer)
 *   **故事線稽核三綠燈標準 (🟢🟢🟢)**：
-    1.  `🟢` **故事線通順度**：7 頁故事線必須完美契合「指標優先」的主線（現狀 ➔ 瓶頸 ➔ 用戶故事 ➔ 成功定義 ➔ 功能機制 ➔ 解方原型 ➔ 驗證計畫），前後因果邏輯必須緊密相扣，轉換流暢自然。
-    2.  `🟢` **主管視角 (Executive Rationale)**：投影片標題必須是白話結論，非內部術語 (如 STEP X)。簡報內容必須具備宏觀商業視角，向高管說清楚為何該痛點非解不可、為何此指標是核心價值的誠實代表。
+    1.  `🟢` **故事線通順度**：7 頁故事線必須完美契合「指標優先」的主線（現狀 ➔ 瓶頸 ➔ 用戶故事 ➔ 成功定義 ➔ 使用者互動流程 ➔ 解方原型 ➔ 驗證計畫），前後因果邏輯必須緊密相扣，轉換流暢自然。
+    2.  `🟢` **使用者互動圖硬性要求**：**Slide 5 必須是「使用者互動流程圖」（而非後台技術架構圖）**。必須以圖形化卡片與連接關係（例如：用戶輸入端 ➔ 核心交互步驟 ➔ 系統反饋 ➔ 輸出端）來描述，且此流程圖必須嚴格基於 `design-system-portfolio-site_6640.md` 的視覺設計規範，嚴禁使用純文字條列來敷衍互動流程。
     3.  `🟢` **警告標籤與定義**：檢查是否在所有主產品或其大盤數據旁均緊鄰標註 `[⚠️ 請在此處更新您正確的主產品名稱及指標]`。簡報中出現的所有專有名詞，必須在第一次出現的頁面中進行白話文定義後才能使用。
 
 ---
@@ -54,8 +54,8 @@
 
 ### 2. 功能層成功指標 (Feature Success Metric - FSM)
 *   **定義**：用以量測該特定新增功能模組的採用與轉化率。必須能反映該功能如何發揮觸媒作用，拉動主產品的大盤北極星指標 (NSM)。
-*   **Few-Shot 範例**（主產品：Notion 平台，其大盤 NSM = 每週活躍協作文件數；新增功能：AI 會議記錄整理）：
-    *   ❌ *供給面/自嗨*：AI 會議記錄功能點擊率（僅反映好奇心，不代表成功轉化）。
+*   **Few-Shot 範例**（主產品：Notion 平台，其大盤 NSM = 每週活躍協作文件數 ｜ 功能：AI 會議記錄整理）：
+    *   ❌ *供給面/自嗨*：AI 會議記錄功能點擊率（僅反映好奇心，不代表真實轉化）。
     *   ✅ *功能層成功*：每週生成的 AI 會議紀錄中，**在會後 48 小時內被 ≥ 2 位團隊成員瀏覽且完成行動清單勾選** 的比例（反映團隊真正利用此功能進行協作與任務對齊）。
 
 ### 3. 量能指標 (Volume Metric)
@@ -65,7 +65,7 @@
     *   ✅ *全域加總*：每週總上傳分析的 PDF 文件數量。
 
 ### 4. 護欄指標 (Guardrail Metric)
-*   **定義**：量測品質、安全性、用戶疲勞度或系統副作用的指標。必須是**可優化的比率 (0-100%)**，不能使用「= 0」這種無法迭代的絕對限制，亦不能使用高變異難以監測的量（如平均對話時長），且必須避開已被技術解決的偽問題。
+*   **定義**：量測品質、安全性、用戶疲勞度或系統副作用的指標。必須是**可優化的比率 (0-100%)**，不能使用「= 0」這種無法迭代的絕對限制，亦不能使用高變異難監測的量（如平均對話時長），且必須避開已被技術解決的偽問題。
 *   **Few-Shot 範例**：
     *   ❌ *絕對值門檻*：API 錯誤次數 = 0（無法衡量過程表現，無法進行灰度優化）。
     *   ✅ *可優化比率*：每週 AI 產出內容的**人工作業修正率**（如修改輪數超過 5 次的比例 ≦ 10%）。
@@ -85,7 +85,7 @@
 
 ## 第二階段：簡報 Storyline 結構 (1-to-N 功能更新專用)
 
-既有產品功能更新簡報大綱必須嚴格遵循以下 **7 頁結構**，以指標驅動故事線：
+既有產品功能更新簡報大綱必須严格遵循以下 **7 頁結構**，以指標驅動故事線：
 
 *   **Slide 1: 項目現狀 (Current Status)**
     *   *大標題*：我們目前以大盤指標 [主產品大盤北極星] 衡量平台價值 `[⚠️ 請在此處更新您正確的主產品名稱及指標]`。
@@ -99,9 +99,9 @@
 *   **Slide 4: 成功定義 (Success Definition)**
     *   *大標題*：成功定義：將 [核心轉化指標] 從 X% 提升至 Y%。
     *   *內容*：對稱左右拆分卡片 (Comparison Split)，左側為 Current State，右側為 Target State。
-*   **Slide 5: 功能機制 (Feature Mechanism)**
-    *   *大標題*：透過 [功能名稱] 將 [輸入源] 自動轉化為 [產出與行動]。
-    *   *內容*：3 步驟橫向 Process Flow，描述新功能如何自動化處理、派發並拉回協作。
+*   **Slide 5: 使用者互動與流程圖 (User Interaction & Flowchart)**
+    *   *大標題*：功能機制與使用者互動流程設計。
+    *   *內容*：**硬性要求規劃使用者互動與流程圖**。描述輸入源、AI 階段處理（如 Extractor & Verifier）如何將資訊反饋給用戶，以及最終的輸出與下游同步機制流向。
 *   **Slide 6: 解方展示與原型 (Solution UI & Prototype)**
     *   *大標題*：新功能介面與流程設計。
     *   *內容*：說明內嵌的 AI 功能區塊規劃與同步或協作面板的互動介面。
@@ -117,19 +117,19 @@
 ## 第三階段：Gamma 設計與風格指令 (Gamma Style Directives)
 
 在生成的 Prompt 底部，必須附帶一組**嚴格的風格制約**，以便直接複製到 Gamma 中：
-1.  **主題風格 (Theme)**：Minimalist visual style, large typography, high contrast, airy layout with generous padding and margins (breathing room).
+1.  **主題風格 (Theme)**：Minimalist visual style, large typography, high contrast, airy layout with generous padding and margins (breathing room) based on `design-system-portfolio-site_6640.md`.
 2.  **配色方案 (Colors)**：
     *   頁面背景 (Page Background)：暖米白 Warm Paper White (`#FDFCFA` 或 `rgb(253,252,249)`)
     *   主標題與卡片框 (Primary Accent)：深靛藍 Classic Navy (`#153166` / `rgb(21,49,102)`)
     *   高亮強調 (Brand Highlight)：青色 Clean Teal (`#48B7BD` / `rgb(72,183,189)`)
     *   主內文 (Body Text)：深炭黑 Deep Charcoal (`#171C24` / `rgb(23,28,36)`)
     *   警示/痛點 (Warnings/Alerts)：猩紅 Rose Crimson (`#B91C1C`)
-3.  **排版佈局限制 (Layout Constraints)**：
+3.  **排版與架構圖限制 (Layout & Diagram Constraints)**：
     *   **嚴格禁止任何 Emoji**（如 ↗, ✅ 等），使用 Unicode 標點（如 `—`, `·`）或文字代替。
     *   排版極度要求呼吸感，禁止擁擠。每張卡片/幻燈片內最多放置 3 個內容項目。
     *   採用「大數字 KPI 卡片」呈現 Slide 1 的數據。
     *   使用「2欄/3欄拆分卡片」呈現用戶痛點與成功定義，代替長文字條列。
-    *   使用「橫向步驟鏈 (Step list)」呈現解方流程。
+    *   **資料視覺化架構圖**：Slide 5 必須使用卡片式區塊 (.ct-grid / .figure) 作為節點，節點之間必須使用 inline SVG 箭頭向量 (`viewBox='0 0 10 10' stroke='currentColor' stroke-width='1.4'`) 或 clean lines 連接，直觀表現出使用者互動的步驟流向。
     *   使用「階層指標樹」呈現驗證計畫。
 4.  **文字密度 (Text Density)**：Brief (簡練、視覺主導)。
 
@@ -158,6 +158,16 @@ Create a 16:9 widescreen presentation using a minimalist, high-contrast style wi
 
 ...
 
+## Slide 5: [第五頁標題 - 使用者互動與流程]
+*   互動流程流向（卡片連接關係）：[輸入源] ➔ [AI 核心處理] ➔ [用戶反饋/雙重驗證] ➔ [下游任務派發與同步]
+*   互動步驟描述：
+    *   步驟 1 [輸入端]：[用戶行為描述，嚴禁使用無結構文字]
+    *   步驟 2 [AI 處理]：[系統行為描述]
+    *   步驟 3 [校對與驗證]：[交互細節描述]
+    *   步驟 4 [完成匯出]：[最終價值交付點描述]
+
+...
+
 ## Slide 7: [第七頁標題]
 *   驗證指標樹：
     *   產品大盤北極星指標 (NSM) [⚠️ 請在此處更新您正確的主產品名稱及指標]：[定義] ➔ 理由：[說明]
@@ -166,15 +176,15 @@ Create a 16:9 widescreen presentation using a minimalist, high-contrast style wi
     *   護欄指標 (Guardrail) ≦ 5 次 (依 query_round 統計)：[定義] ➔ 理由：[說明]
 
 ### 🎨 Design & Style Directives for Gamma:
-- **Theme**: Minimalist visual style, large typography, high contrast, airy layout with generous padding and margins (breathing room).
+- **Theme**: Minimalist visual style, large typography, high contrast, airy layout with generous padding and margins (breathing room) based on design-system-portfolio-site_6640.md.
 - **Colors**: Background #FDFCFA, Primary Accent #153166, Brand Highlight #48B7BD, Body Text #171C24, Alerts #B91C1C.
 - **Constraints**: Strictly forbid all emojis. Keep text density low (Brief). Max 3 items per card.
-- **Layouts**: Use large metrics callouts for Slide 1, 2-column split cards for Slide 2 & 4, horizontal step list for Slide 5, and a hierarchical connection list for Slide 7.
+- **Layouts**: Use large metrics callouts for Slide 1, 2-column split cards for Slide 2 & 4, horizontal connected interaction blocks with SVG arrows for Slide 5, and a hierarchical connection list for Slide 7.
 
 --- END OF GAMMA PROMPT ---
 ```
 
-### 雙重稽核關卡報告 (Audit Reports)
+### 雙重稽核官關卡報告 (Audit Reports)
 
 | 頁碼 | 頁面主題/大標題 | 指標稽核官評審 | PM 總監稽核官評審 | 狀態 |
 | :--- | :--- | :--- | :--- | :--- |
@@ -182,7 +192,7 @@ Create a 16:9 widescreen presentation using a minimalist, high-contrast style wi
 | Slide 2 | [標題] | 🟢🟢🟢 (通過理由) | 🟢🟢🟢 (通過理由) | 🟢 PASS |
 | Slide 3 | [標題] | 🟢🟢🟢 (通過理由) | 🟢🟢🟢 (通過理由) | 🟢 PASS |
 | Slide 4 | [標題] | 🟢🟢🟢 (通過理由) | 🟢🟢🟢 (通過理由) | 🟢 PASS |
-| Slide 5 | [標題] | 🟢🟢🟢 (通過理由) | 🟢🟢🟢 (通過理由) | 🟢 PASS |
+| Slide 5 | [標題] | 🟢🟢🟢 (已驗證無指標偏差) | 🟢🟢🟢 (已確認為使用者互動流程圖) | 🟢 PASS |
 | Slide 6 | [標題] | 🟢🟢🟢 (通過理由) | 🟢🟢🟢 (通過理由) | 🟢 PASS |
 | Slide 7 | [標題] | 🟢🟢🟢 (包含完整3層樹) | 🟢🟢🟢 (警告標籤已置入) | 🟢 PASS |
 

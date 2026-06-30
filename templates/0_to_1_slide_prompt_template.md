@@ -15,10 +15,10 @@
 
 為了確保產出簡報的高品質與指標的絕對嚴謹性，你（執行此 Prompt 的 LLM）必須依照以下 **提示鏈、多角色稽核與反思規劃 (Chaining, Multi-Agent Audit & Reflection Patterns)** 順序執行：
 
-### 1. 執行路義規劃 (Planning & Chaining Phase)
+### 1. 執行路徑規劃 (Planning & Chaining Phase)
 *   **第一步（分析輸入）**：解析 `<input_documents>`，提取核心產品願景與欲解決的痛點。
 *   **第二步（並行搜尋調研 - Fan-out）**：針對痛點自動展開 10 個搜尋查詢，模擬 10 隻子 Agent 並行調研真實世界數據與網址。
-*   **第三步（草擬簡報大綱）**：依照「問題優先」的故事線與「資料視覺化」佈局規則，草擬 6 頁簡報大綱。
+*   **第三步（草擬簡報大綱）**：依照「問題優先」的故事線與「資料視覺化」佈局規則，草擬 6 頁簡報大綱。**特別注意：Slide 4 必須被定義為使用者互動與流程圖**。
 *   **第四步（雙重嚴苛稽核官審查 - Multi-Agent Audit）**：對每一頁簡報與指標，執行下方的「雙重稽核官關卡」與指標規則。
 *   **第五步（最終輸出）**：只有在每一頁簡報同時通過雙重稽核官的 **各三個綠燈 (🟢🟢🟢) 共六個綠燈** 審查後，方可輸出最終的 Gamma Prompt。
 
@@ -33,9 +33,9 @@
 
 #### 👤 PM 總監稽核官 (PM Director Audit Officer)
 *   **故事線稽核三綠燈標準 (🟢🟢🟢)**：
-    1.  `🟢` **故事線通順度**：6 頁故事線必須完美契合「問題優先」的主線（問題 ➔ Persona ➔ 成功定義 ➔ 解方 ➔ 運作與 NSM ➔ 驗證計畫），前後因果邏輯必須緊密相扣，轉換流暢自然。
-    2.  `🟢` **主管視角 (Executive Rationale)**：投影片標題必須是白話結論，非內部術語 (如 STEP X)。簡報內容必須具備宏觀商業視角，向高管說清楚為何該痛點非解不可、為何此指標是核心價值的誠實代表。
-    3.  `🟢` **術語過濾與定義**：簡報中出現的所有專有名詞（如北極星、護欄等），必須在第一次出現的頁面中進行白話文定義後才能使用。
+    1.  `🟢` **故事線通順度**：6 頁故事線必須完美契合「問題優先」的主線（問題 ➔ Persona ➔ 成功定義 ➔ 使用者互動與流程 ➔ 運作與 NSM ➔ 驗證計畫），前後因果邏輯必須緊密相扣，轉換流暢自然。
+    2.  `🟢` **使用者互動圖硬性要求**：**Slide 4 必須是「使用者互動與流程圖」（而非後台技術架構圖）**。必須以圖形化卡片與連接關係（例如：用戶輸入端 ➔ 核心交互步驟 ➔ 系統反饋 ➔ 輸出端）來描述，且此流程圖必須嚴格基於 `design-system-portfolio-site_6640.md` 的視覺設計規範，嚴禁使用純文字條列來敷衍互動流程。
+    3.  `🟢` **主管視角與名詞定義**：投影片標題必須是白話結論，非內部術語 (如 STEP X)。簡報中出現的所有專有名詞（如北極星、護欄等），必須在第一次出現的頁面中進行白話文定義後才能使用。
 
 ---
 
@@ -62,7 +62,7 @@
     *   ✅ *全域加總*：每週總上傳分析的 PDF 文件數量。
 
 ### 4. 護欄指標 (Guardrail Metric)
-*   **定義**：量測品質、安全性、用戶疲勞度或系統副作用的指標。必須是**可優化的比率 (0-100%)**，不能使用「= 0」這種無法迭代的絕對限制，亦不能使用高變異難以監測的量（如平均對話時長），且必須避開已被技術解決的偽問題。
+*   **定義**：量測品質、安全性、用戶疲勞度或系統副作用的指標。必須是**可優化的比率 (0-100%)**，不能使用「= 0」這種無法迭代的絕對限制，亦不能使用高變異難監測的量（如平均對話時長），且必須避開已被技術解決的偽問題。
 *   **Few-Shot 範例**：
     *   ❌ *絕對值門檻*：API 錯誤次數 = 0（無法衡量過程表現，無法進行灰度優化）。
     *   ✅ *可優化比率*：每週 AI 產出內容的**人工作業修正率**（如修改輪數超過 5 次的比例 ≦ 10%）。
@@ -92,9 +92,9 @@
 *   **Slide 3: 成功定義與 User Story (Success Definition & User Story)**
     *   *大標題*：成功定義：跳過空白期/痛點，在極短時間內完成核心產出。
     *   *內容*：標準 User Story（身為...我想要...以便...）以及產品所承諾的具體指標。
-*   **Slide 4: 解方展現 (Solution & UI Flow)**
-    *   *大標題*：主流程與介面原型設計。
-    *   *內容*：說明 Wizard 嚮導介面規劃與系統處理流程。
+*   **Slide 4: 使用者互動與流程圖 (User Interaction & Flowchart)**
+    *   *大標題*：解方介面與使用者互動流程設計。
+    *   *內容*：**硬性要求規劃使用者互動與流程圖**。描述用戶如何輸入、系統如何引導、AI 階段處理（如 Extractor & Verifier）如何將資訊反饋給用戶，以及最終的輸出互動。
 *   **Slide 5: 未來指標承諾 (Future Metric Commitment)**
     *   *大標題*：我們承諾以 [北極星指標] 衡量產品價值。
     *   *內容*：定義大盤北極星指標 (NSM)（例如週匯出量），並說明為什麼採用此指標做為價值代理指標。
@@ -110,19 +110,19 @@
 ## 第三階段：Gamma 設計與風格指令 (Gamma Style Directives)
 
 在生成的 Prompt 底部，必須附帶一組**嚴格的風格制約**，以便直接複製到 Gamma 中：
-1.  **主題風格 (Theme)**：Minimalist visual style, large typography, high contrast, airy layout with generous padding and margins (breathing room).
+1.  **主題風格 (Theme)**：Minimalist visual style, large typography, high contrast, airy layout with generous padding and margins (breathing room) based on `design-system-portfolio-site_6640.md`.
 2.  **配色方案 (Colors)**：
     *   頁面背景 (Page Background)：暖米白 Warm Paper White (`#FDFCFA` 或 `rgb(253,252,249)`)
     *   主標題與卡片框 (Primary Accent)：深靛藍 Classic Navy (`#153166` / `rgb(21,49,102)`)
     *   高亮強調 (Brand Highlight)：青色 Clean Teal (`#48B7BD` / `rgb(72,183,189)`)
     *   主內文 (Body Text)：深炭黑 Deep Charcoal (`#171C24` / `rgb(23,28,36)`)
     *   警示/痛點 (Warnings/Alerts)：猩紅 Rose Crimson (`#B91C1C`)
-3.  **排版佈局限制 (Layout Constraints)**：
+3.  **排版與架構圖限制 (Layout & Diagram Constraints)**：
     *   **嚴格禁止任何 Emoji**（如 ↗, ✅ 等），使用 Unicode 標點（如 `—`, `·`）或文字代替。
     *   排版極度要求呼吸感，禁止擁擠。每張卡片/幻燈片內最多放置 3 個內容項目。
     *   採用「大數字 KPI 卡片」呈現 Slide 1 的數據。
     *   使用「2欄/3欄拆分卡片」呈現用戶痛點與成功定義，代替長文字條列。
-    *   使用「橫向步驟鏈 (Step list)」呈現解方流程。
+    *   **資料視覺化架構圖**：Slide 4 必須使用卡片式區塊 (.ct-grid / .figure) 作為節點，節點之間必須使用 inline SVG 箭頭向量 (`viewBox='0 0 10 10' stroke='currentColor' stroke-width='1.4'`) 或 clean lines 連接，直觀表現出使用者互動的步驟流向。
     *   使用「階層指標樹」呈現驗證計畫。
 4.  **文字密度 (Text Density)**：Brief (簡練、視覺主導)。
 
@@ -152,6 +152,16 @@ Create a 16:9 widescreen presentation using a minimalist, high-contrast style wi
 
 ...
 
+## Slide 4: [第四頁標題 - 使用者互動與流程]
+*   互動流程流向（卡片連接關係）：[用戶輸入] ➔ [AI 核心處理] ➔ [用戶反饋/雙重驗證] ➔ [匯出/分享產出]
+*   互動步驟描述：
+    *   步驟 1 [輸入端]：[用戶行為描述，嚴禁使用無結構文字]
+    *   步驟 2 [AI 處理]：[系統行為描述]
+    *   步驟 3 [校對與驗證]：[交互細節描述]
+    *   步驟 4 [完成匯出]：[最終價值交付點描述]
+
+...
+
 ## Slide 6: [第六頁標題]
 *   驗證指標樹 (無功能層指標)：
     *   北極星指標 (NSM)：[定義] ➔ 理由：[說明]
@@ -159,22 +169,22 @@ Create a 16:9 widescreen presentation using a minimalist, high-contrast style wi
     *   護欄指標 (Guardrail) ≦ 5 次 (依 query_round 統計)：[定義] ➔ 理由：[說明]
 
 ### 🎨 Design & Style Directives for Gamma:
-- **Theme**: Minimalist visual style, large typography, high contrast, airy layout with generous padding and margins (breathing room).
+- **Theme**: Minimalist visual style, large typography, high contrast, airy layout with generous padding and margins (breathing room) based on design-system-portfolio-site_6640.md.
 - **Colors**: Background #FDFCFA, Primary Accent #153166, Brand Highlight #48B7BD, Body Text #171C24, Alerts #B91C1C.
 - **Constraints**: Strictly forbid all emojis. Keep text density low (Brief). Max 3 items per card.
-- **Layouts**: Use large metrics callouts for Slide 1, 2-column split cards for Slide 2 & 3, horizontal step list for Slide 4, and a hierarchical connection list for Slide 6.
+- **Layouts**: Use large metrics callouts for Slide 1, 2-column split cards for Slide 2 & 3, horizontal connected interaction blocks with SVG arrows for Slide 4, and a hierarchical connection list for Slide 6.
 
 --- END OF GAMMA PROMPT ---
 ```
 
-### 雙重稽核關卡報告 (Audit Reports)
+### 雙重稽核官關卡報告 (Audit Reports)
 
 | 頁碼 | 頁面主題/大標題 | 指標稽核官評審 | PM 總監稽核官評審 | 狀態 |
 | :--- | :--- | :--- | :--- | :--- |
 | Slide 1 | [標題] | 🟢🟢🟢 (通過理由) | 🟢🟢🟢 (通過理由) | 🟢 PASS |
 | Slide 2 | [標題] | 🟢🟢🟢 (通過理由) | 🟢🟢🟢 (通過理由) | 🟢 PASS |
 | Slide 3 | [標題] | 🟢🟢🟢 (通過理由) | 🟢🟢🟢 (通過理由) | 🟢 PASS |
-| Slide 4 | [標題] | 🟢🟢🟢 (通過理由) | 🟢🟢🟢 (通過理由) | 🟢 PASS |
+| Slide 4 | [標題] | 🟢🟢🟢 (已驗證無指標偏差) | 🟢🟢🟢 (已確認為使用者互動流程圖) | 🟢 PASS |
 | Slide 5 | [標題] | 🟢🟢🟢 (通過理由) | 🟢🟢🟢 (通過理由) | 🟢 PASS |
 | Slide 6 | [標題] | 🟢🟢🟢 (已驗證無FSM) | 🟢🟢🟢 (已驗證故事連貫) | 🟢 PASS |
 
