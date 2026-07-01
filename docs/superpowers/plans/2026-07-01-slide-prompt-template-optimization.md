@@ -1195,6 +1195,136 @@ _shared-modules.md and no superseded mechanisms/colors/syntax remain."
 
 ---
 
+---
+
+## Task 8: Full emoji removal (post-plan amendment)
+
+**Files:**
+- Modify: `templates/_shared-modules.md`
+- Modify: `templates/1_to_n_slide_prompt_template.md`
+- Modify: `templates/0_to_1_slide_prompt_template.md`
+
+**Interfaces:**
+- Consumes: none new.
+- Produces: an emoji-free set of three files satisfying the plan's own Global Constraint ("No emoji anywhere in generated template instructions"), which Task 7's final reviewer flagged as violated by pre-existing content (🤖/🟢/👤/📊/🎨/⚠️) that predates this entire plan and was never in any of Tasks 1-7's scope.
+
+**Background:** Task 7's reviewer found a stray `🤖` emoji in a section heading and flagged it as out-of-scope-but-notable. The controller surveyed the full scope and found it's much larger: `🟢` (green-light audit marker) appears 66 times in the 1-to-N template and 59 times in the 0-to-1 template as the core visual language of the double-auditor mechanism (both as a repeated decorative suffix `(🟢🟢🟢)` in headings, as individual checklist-item markers `` `🟢` ``, and in the audit-report table as `🟢 PASS`); `⚠️` appears 8 and 1 times as a warning-tag marker meant to be embedded in generated slide content; `🤖`/`👤`/`📊`/`🎨` appear a handful of times each as decorative prefixes on section headings. The user, presented with this scope, chose full removal via a dedicated task rather than leaving it as an accepted pre-existing exception.
+
+### Steps
+
+- [ ] **Step 1: Establish the emoji inventory and verify current (Red) state**
+
+Run (Python, not grep — grep has encoding trouble with multi-byte emoji on this Windows/git-bash setup):
+
+```python
+import sys
+files = ['templates/1_to_n_slide_prompt_template.md', 'templates/0_to_1_slide_prompt_template.md', 'templates/_shared-modules.md']
+emojis = ['\U0001F916', '\U0001F7E2', '\U0001F464', '\U0001F4CA', '\U0001F3A8', '⚠️']
+for f in files:
+    with open(f, encoding='utf-8') as fh:
+        text = fh.read()
+    counts = {e: text.count(e) for e in emojis}
+    print(f, counts)
+```
+
+Expected (Red — current state before this task):
+- `templates/1_to_n_slide_prompt_template.md`: 🤖=1, 🟢=66, 👤=2, 📊=1, 🎨=1, ⚠️=8
+- `templates/0_to_1_slide_prompt_template.md`: 🤖=1, 🟢=59, 👤=2, 📊=1, 🎨=1, ⚠️=1
+- `templates/_shared-modules.md`: 🤖=1, 🟢=2, all others=0
+
+- [ ] **Step 2: Replace section-heading decorative emoji (🤖 👤 📊 🎨) with plain headings in all three files**
+
+In each of the three files, find every heading line containing one of these emoji as a decorative prefix and remove the emoji plus the following space, leaving the heading text otherwise unchanged. Examples (apply the same pattern wherever each emoji+heading-text combination occurs in each file):
+
+- `## 🤖 智能體設計模式執行指南 (Agentic Design Patterns Execution)` → `## 智能體設計模式執行指南 (Agentic Design Patterns Execution)`
+- `### 執行架構總覽（放在「🤖 智能體設計模式執行指南」章節開頭）` (in `_shared-modules.md`, referencing the renamed heading above) → `### 執行架構總覽（放在「智能體設計模式執行指南」章節開頭）`
+- `#### 👤 指標稽核官 (Metrics Audit Officer)` → `#### 指標稽核官 (Metrics Audit Officer)`
+- `#### 👤 PM 總監稽核官 (PM Director Audit Officer)` → `#### PM 總監稽核官 (PM Director Audit Officer)`
+- `## 📊 指標定義與 Few-Shot 指引 (Metrics Blueprint & Few-Shots)` → `## 指標定義與 Few-Shot 指引 (Metrics Blueprint & Few-Shots)`
+- `### 🎨 Design & Style Directives for Gamma:` → `### Design & Style Directives for Gamma:`
+
+Apply this to both templates (each heading pattern appears once per template) and to `_shared-modules.md`'s one cross-reference to the renamed `🤖` heading (Module 3's "執行架構總覽" subheading, which quotes the 1-to-N/0-to-1 heading name in its own parenthetical).
+
+- [ ] **Step 3: Replace the `🟢`-as-decorative-count-suffix pattern `(🟢🟢🟢)` with nothing (the preceding Chinese text already states the count in words)**
+
+In both templates, find every occurrence of a heading/label ending in `(🟢🟢🟢)` where the preceding text already states the count in Chinese (e.g. "三綠燈標準", "各三個綠燈", "共六個綠燈"). Remove the parenthetical entirely (including the space before it). Examples:
+
+- `**指標稽核三綠燈標準 (🟢🟢🟢)**：` → `**指標稽核三綠燈標準**：`
+- `**故事線稽核三綠燈標準 (🟢🟢🟢)**：` → `**故事線稽核三綠燈標準**：`
+- `只有在每一頁簡報同時通過雙重稽核官的 **各三個綠燈 (🟢🟢🟢) 共六個綠燈** 審查後` → `只有在每一頁簡報同時通過雙重稽核官的 **各三個綠燈標準、共六個綠燈** 審查後`（1-to-N template；0-to-1 template's equivalent sentence keeps its own word-count phrasing, adjust grammatically the same way — remove the `(🟢🟢🟢)` parenthetical without breaking the sentence）
+
+Apply the same pattern to any other `(🟢🟢🟢)`-suffixed heading/label in either template not explicitly listed above (search each file for the literal 3-emoji sequence and handle each occurrence the same way — strip the parenthetical, keep the surrounding Chinese phrase intact).
+
+- [ ] **Step 4: Replace individual `` `🟢` `` checklist-item markers with a plain-text bracket marker `` `[G]` `` in both templates and `_shared-modules.md`**
+
+Find every occurrence of the pattern `` `🟢` **`` (a green-light emoji immediately followed by a bolded criterion name, used as a numbered-list item prefix for each individual audit criterion) in all three files, and replace `` `🟢` `` with `` `[G]` ``. Example (repeat for every numbered green-light item in both templates' 指標稽核官/PM 總監稽核官 sections, and in `_shared-modules.md`'s Module 3 text blocks that mirror them):
+
+- `` 1.  `🟢` **價值度量**：... `` → `` 1.  `[G]` **價值度量**：... ``
+- `` 4.  `🟢` **專業語域防護**：... `` → `` 4.  `[G]` **專業語域防護**：... ``
+- `` 5.  `🟢` **拆鷹架與洞察優先**：... `` → `` 5.  `[G]` **拆鷹架與洞察優先**：... ``
+
+Apply this identically to all matching items in `templates/1_to_n_slide_prompt_template.md`, `templates/0_to_1_slide_prompt_template.md`, and `templates/_shared-modules.md` (the shared module's Module 3 text blocks contain the same `` `🟢` **...**：`` pattern for the 4th and 5th green-light rules it defines).
+
+- [ ] **Step 5: Replace the audit-report table's `🟢🟢🟢 (...)` cell content and `🟢 PASS` cell with plain text**
+
+In both templates' `### 雙重稽核官關卡報告 (Audit Reports)` example table, every data row has the pattern `| 🟢🟢🟢 (...) | 🟢🟢🟢 (...) | 🟢 PASS |`. Replace:
+- `🟢🟢🟢 (reason text)` → `PASS (reason text)` (drop the 3 emoji, prefix the existing parenthetical reason with the word "PASS ")
+- `🟢 PASS` → `PASS` (drop the single leading emoji, keep the word)
+
+Apply this to every row in both templates' example table (7 rows in 1-to-N, 6 rows in 0-to-1).
+
+- [ ] **Step 6: Replace the `⚠️` warning-tag marker `[⚠️ 請在此處更新您正確的主產品名稱及指標]` (and its shorter variants) with a plain-bracket form, in both templates**
+
+This exact bracketed tag is designed to be **embedded directly into generated Gamma slide content** (per Task 2/3's confidence-tiered clarification and warning-tag mechanism), so it must not contain an emoji. Find every occurrence of `[⚠️ 請在此處更新您正確的主產品名稱及指標]` (and the standalone `⚠️` prefix inside any other bracketed variant, e.g. `[⚠️ 請在此處更新您正確的主產品名稱及指標]` appearing inline within a larger sentence) in `templates/1_to_n_slide_prompt_template.md` (8 occurrences) and `templates/0_to_1_slide_prompt_template.md` (1 occurrence), and replace with:
+
+`[請在此處更新您正確的主產品名稱及指標]`
+
+(i.e., drop `⚠️ ` — the warning glyph plus trailing space — leaving the bracket and Chinese text otherwise identical). Do this for every occurrence; the bracket content and surrounding sentence structure do not otherwise change.
+
+- [ ] **Step 7: Verify zero emoji remain (Green)**
+
+Run the same Python snippet from Step 1. Expected: all six emoji counts are 0 in all three files.
+
+- [ ] **Step 8: Verify fence integrity was not disturbed in `_shared-modules.md`**
+
+Run:
+
+```python
+import markdown, re
+with open('templates/_shared-modules.md', encoding='utf-8') as f:
+    text = f.read()
+html = markdown.markdown(text, extensions=['fenced_code'])
+headings = re.findall(r'<h[1-6][^>]*>(.*?)</h[1-6]>', html)
+print(len(headings), 'headings found')
+for h in headings:
+    print(h)
+```
+
+Expected: the same 20 headings previously confirmed after Task 6 (Module 1 through Module 6 and all their sub-headings), none swallowed into a code block, none missing, none newly introduced. This diff should only ever touch text inside existing lines — it must not add or remove any code fence lines.
+
+- [ ] **Step 9: Verify no other regression was introduced**
+
+Run: `grep -n "P1.*P2.*P3\|信心分級澄清機制\|大盤北極星指標" templates/1_to_n_slide_prompt_template.md templates/0_to_1_slide_prompt_template.md templates/_shared-modules.md`
+Expected: same matches as before this task started (this is a spot-check that unrelated content wasn't accidentally touched by a careless find-and-replace across the large emoji-removal diff) — cross-reference against Task 7's final state if in doubt.
+
+- [ ] **Step 10: Commit**
+
+```bash
+git add templates/_shared-modules.md templates/1_to_n_slide_prompt_template.md templates/0_to_1_slide_prompt_template.md
+git commit -m "fix: remove all pre-existing emoji from both templates and shared module
+
+Task 7's final reviewer flagged a stray 🤖 emoji as out-of-scope; a
+full survey found 🟢 (66/59 occurrences, the double-auditor's core
+green-light marker), ⚠️ (8/1, embedded in generated-content warning
+tags), and 🤖/👤/📊/🎨 (section-heading decoration) throughout both
+templates and the shared module, all predating this plan. User chose
+full removal: 🟢 → `[G]`/`PASS` text markers, ⚠️ dropped from the
+warning-tag bracket text, decorative heading emoji removed outright —
+satisfying the plan's own 'no emoji anywhere' global constraint."
+```
+
+---
+
 ## Self-Review Notes (completed while writing this plan)
 
 1. **Spec coverage**: §3.A → Task 2. §3.B → Task 3. §3.C → Task 4. §3.D → Task 6. §3.E → Task 5. §3.F → Tasks 1-6 (SYNC tags) verified in Task 7. §3.G → Task 3 Step 4/5. §3.H (added mid-execution, after Task 1 shipped) → Task 3 Steps 1/4/5/6/7. §4 ("不採用的方向") → verified negatively in Task 7 Step 5. All design-doc sections have a task.
