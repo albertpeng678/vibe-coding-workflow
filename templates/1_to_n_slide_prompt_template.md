@@ -1,7 +1,7 @@
 # 1 to N Slide Prompt Template (既有產品功能更新 Gamma Prompt 生成模板)
 
 > **使用方式：** 
-> 複製此模板的全部內容，並在最下方的 `<input_documents>` 中貼上你功能的 `spec.md` 與 `plan.md`，然後發送給 AI 助手。它將會產出一份**可以直接複製貼進 Gamma 簡報生成軟體的 Prompt（含大綱與嚴格風格指令）**，以及每一頁的演講講稿。
+> 複製此模板的全部內容，並在最下方的 `<input_documents>` 中貼上你功能的 `spec.md` 與 `plan.md`，然後發送給 AI 助手。它將會產出一份**可以直接複製貼進 Gamma 簡報生成軟體的 Prompt（含封面頁、大綱與嚴格風格指令）**，以及每一頁的演講講稿。
 
 ---
 
