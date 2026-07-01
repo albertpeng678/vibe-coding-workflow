@@ -205,8 +205,7 @@
 > **來源**：`pm_proposal_presentation.pptx` Slide 1/10/18 實測版式（封面頁與章節分節頁
 > 共用同一版面公式）。
 
-```markdown
-## 第○階段：標題頁 / 封面頁規格（Cover Slide Specification）
+### 標題頁 / 封面頁規格（Cover Slide Specification）
 
 在正式的大綱**之前**，必須額外生成一頁獨立的「Slide 0：封面頁」，作為整份簡報的開場：
 
@@ -220,7 +219,7 @@
         3.  一句話副標說明（中等字級、次文字灰 `#525864`）
         4.  作者/單位落款（小字級、次文字灰 `#525864`，置於頁面下方）
 
-### 對應 Gamma Prompt 輸出格式（插入大綱最前方）：
+### 對應 Gamma Prompt 輸出格式（插入大綱最前方）
 
 ```text
 ## Slide 0: [封面標題]
@@ -231,7 +230,6 @@
 *   H1 (large, 2-3 lines, navy #153166): [一句話核心主張，倒金字塔結論句]
 *   Subtitle (medium, gray #525864): [一句話說明簡報目的]
 *   Byline (small, gray #525864, bottom-left): [提案人] · [職稱] · [簡報用途]
-```
 ```
 
 ---
