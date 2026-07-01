@@ -496,7 +496,7 @@ Find the heading `## 🤖 智能體設計模式執行指南 (Agentic Design Patt
 ```markdown
 ## 🤖 智能體設計模式執行指南 (Agentic Design Patterns Execution)
 
-<!-- SYNC: _shared-modules.md#module-3-雙重稽核官規則（執行架構總覽） -->
+<!-- SYNC: _shared-modules.md#module-3-雙重稽核官規則 -->（執行架構總覽段落）
 
 本 prompt 採用**提示鏈（Prompt Chaining Pattern）**設計：將「產出一份稽核過的簡報」這個複雜任務拆解為一系列有明確依賴關係的子步驟，前一步的輸出是後一步的必要輸入，禁止跳步或合併步驟。
 
@@ -514,7 +514,7 @@ Find the heading `### 2. 雙重稽核官關卡 (Double-Auditor Gatekeeper)` and 
 ```markdown
 ### 2. 雙重稽核官關卡 (Double-Auditor Gatekeeper)
 
-<!-- SYNC: _shared-modules.md#module-3-雙重稽核官規則（理論基礎） -->
+<!-- SYNC: _shared-modules.md#module-3-雙重稽核官規則 -->（理論基礎段落）
 
 本 prompt 要求你在同一次生成中，依序扮演三個角色分離、身份互斥的智能體人格：「草擬者（Producer）」→「稽核官 A：指標稽核官」→「稽核官 B：PM 總監稽核官」。這個設計對應 Reflection Pattern：評審與產出角色必須分離，以避免同一套生成邏輯自我審查時的認知偏差。兩位稽核官必須被賦予互斥且明確的評估標準，不是「請再檢查一次」這種模糊指令。
 
@@ -549,7 +549,7 @@ Replace with:
 ```markdown
 ## 第二階段：簡報 Storyline 結構 (1-to-N 功能更新專用)
 
-<!-- SYNC: _shared-modules.md#module-3-雙重稽核官規則（拆鷹架寫作原則） -->
+<!-- SYNC: _shared-modules.md#module-3-雙重稽核官規則 -->（拆鷹架寫作原則段落）
 
 任何頁面若涉及使用者研究或痛點佐證，**嚴禁**以「空白分析框架」呈現內容（例如完整的共情圖版面、雙鑽石模型圖、標準 Persona 卡片模板、放滿無關生活細節的用戶側寫）。改為兩個具體策略（NN/g 去鷹架化建議）：
 
@@ -572,7 +572,7 @@ Replace with:
 ```markdown
 ## 第二階段：簡報 Storyline 結構 (0-to-1 全新產品專用)
 
-<!-- SYNC: _shared-modules.md#module-3-雙重稽核官規則（拆鷹架寫作原則） -->
+<!-- SYNC: _shared-modules.md#module-3-雙重稽核官規則 -->（拆鷹架寫作原則段落）
 
 任何頁面若涉及使用者研究或痛點佐證，**嚴禁**以「空白分析框架」呈現內容（例如完整的共情圖版面、雙鑽石模型圖、標準 Persona 卡片模板、放滿無關生活細節的用戶側寫）。改為兩個具體策略（NN/g 去鷹架化建議）：
 
