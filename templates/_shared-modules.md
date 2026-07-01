@@ -236,7 +236,45 @@
 
 ## Module 5: Gamma 風格精簡指令
 
-（Task 5 補上）
+> **來源**：Gamma AI 能力調研（結論：Gamma 不會解析文字 prompt 裡的 hex 色碼與 inline
+> SVG，色彩/字體應透過 Theme Editor / Brand Kit 一次性設定；風格指令應精簡為高層基調宣告）
+> ＋ pptx 落差分析（強調色實測為 `#007583`，非原模板誤用的淺青色色階；缺次文字灰、頁尾、Overline）。
+
+在生成的 Prompt 底部，必須附帶一組**精簡的風格制約**，以便直接複製到 Gamma 中：
+
+1.  **主題基調 (Theme)**：Minimalist visual style, large typography, high contrast, airy layout with generous padding and margins (breathing room), based on `design-system-portfolio-site_6640.md`.
+2.  **配色方案 (Colors)**（僅列高層基調，精確色碼透過下方「Brand Kit 一次性設定」落實）：
+    *   頁面背景：暖米白 Warm Paper White (`#FDFCFA`)
+    *   主標題與卡片框：深靛藍 Classic Navy (`#153166`)
+    *   高亮強調／Overline／icon：深青 Brand Strong Teal (`#007583`)（**不是**舊版模板誤用的淺青色——那個色階只適合低透明度背景光暈，不適合前景文字/icon）
+    *   次要強調（可選，次要 icon/次標題）：中青 (`#00969D`)
+    *   主內文：深炭黑 Deep Charcoal (`#171C24`)
+    *   次文字/輔助說明：石墨灰 Slate Gray (`#525864`)（新增；用於卡片說明文字、頁尾、輔助標籤等非主要強調的文字內容）
+    *   警示/痛點：猩紅 Rose Crimson (`#B91C1C`)
+3.  **排版限制 (Layout Constraints)**：
+    *   嚴格禁止任何 Emoji（如 ↗, ✅ 等），使用 Unicode 標點（如 `—`, `·`）或文字代替。
+    *   排版極度要求呼吸感，禁止擁擠。
+    *   採用「大數字 KPI 卡片」呈現首頁數據。
+    *   使用「2欄/3欄拆分卡片」呈現用戶痛點與成功定義，代替長文字條列。
+    *   **頁尾格式（每頁皆須有）**：頁面左下角固定顯示 `[簡報系列名稱英文] · PAGE [兩位數頁碼]`，字級極小，顏色為次文字灰 `#525864`。
+    *   **Overline / Eyebrow（每頁標題上方皆須有）**：在 H1 標題正上方加一行全大寫英文分類詞，字級小、顏色使用 Brand Strong Teal `#007583`，用於標示這一頁在敘事鏈中的主題分類。
+4.  **文字密度 (Text Density)**：Brief（物理簡練、視覺主導）。
+
+### Brand Kit 一次性設定指引（非每次生成都要重複）
+
+Gamma 不會可靠解析文字 prompt 裡的 hex 色碼與字體宣告——這些設定應透過 Gamma 的 **Theme Editor / Brand Kit** 介面一次性設定（色彩、字體、Logo），之後生成的每份簡報自動套用，不需要每次都在文字 prompt 裡重複列出精確色碼。文字 prompt 只需保留「延用品牌 Navy+Teal 配色」這類高層基調宣告即可。
+
+### 生成後檢查清單（取代對 Gamma 一次到位的期待）
+
+Gamma 對精細視覺規則（emoji 禁用、精確色階、字級層級）的遵循度不保證一次到位。使用者貼上 Prompt 生成後，應人工巡檢以下項目：
+*   [ ] 是否有 Emoji 混入
+*   [ ] 強調色是否偏離 Navy/Teal 基調
+*   [ ] 是否有頁面資訊過度擁擠
+*   [ ] 頁尾與 Overline 是否每頁一致
+
+### Outline-first 使用提醒
+
+貼上 Prompt 後，Gamma 會先產出一份中間大綱供審閱。**請先確認大綱結構無誤，再按下「生成完整簡報」**——修正大綱結構遠比事後重寫整份簡報的內容便宜，這是 Gamma 官方認可的效率作法。
 
 ---
 
