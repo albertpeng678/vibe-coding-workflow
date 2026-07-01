@@ -202,7 +202,37 @@
 
 ## Module 4: 標題頁公式
 
-（Task 4 補上）
+> **來源**：`pm_proposal_presentation.pptx` Slide 1/10/18 實測版式（封面頁與章節分節頁
+> 共用同一版面公式）。
+
+```markdown
+## 第○階段：標題頁 / 封面頁規格（Cover Slide Specification）
+
+在正式的大綱**之前**，必須額外生成一頁獨立的「Slide 0：封面頁」，作為整份簡報的開場：
+
+*   **版面公式**：
+    *   全頁滿版背景色（暖米白 `#FDFCFA`）。
+    *   左側靠邊裝飾雙線（一粗一細的垂直線條，貼齊左邊界，幾乎頂滿全頁高度，營造書脊/裝訂感）。
+    *   右上角與右下偏中各放一個大小不同的裝飾圓形色塊（大圓在右下、較小圓在右上，兩者不對稱錯位），使用 Brand Highlight 淡色調。
+    *   文字內容一律靠左對齊，垂直排列，由上到下依序為：
+        1.  Overline（英文全大寫分類詞，小字級、Brand Strong Teal `#007583`）
+        2.  H1 主標題（可分 2-3 行的結論句/價值主張，大字級、Primary Navy 或 Deep Charcoal）
+        3.  一句話副標說明（中等字級、次文字灰 `#525864`）
+        4.  作者/單位落款（小字級、次文字灰 `#525864`，置於頁面下方）
+
+### 對應 Gamma Prompt 輸出格式（插入大綱最前方）：
+
+```text
+## Slide 0: [封面標題]
+*   Layout: Title cover slide with asymmetric decorative circles (top-right
+    small circle, bottom-right large circle) and a vertical double-line
+    accent on the far left edge, spanning nearly full page height.
+*   Overline (small caps, teal #007583): [PROJECT CATEGORY] PROPOSAL
+*   H1 (large, 2-3 lines, navy #153166): [一句話核心主張，倒金字塔結論句]
+*   Subtitle (medium, gray #525864): [一句話說明簡報目的]
+*   Byline (small, gray #525864, bottom-left): [提案人] · [職稱] · [簡報用途]
+```
+```
 
 ---
 
