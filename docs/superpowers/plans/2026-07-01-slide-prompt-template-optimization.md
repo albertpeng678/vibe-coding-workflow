@@ -1325,6 +1325,132 @@ satisfying the plan's own 'no emoji anywhere' global constraint."
 
 ---
 
+## Task 9: Mermaid render-to-PNG + unified output-folder packaging (post-plan amendment)
+
+**Files:**
+- Modify: `templates/_shared-modules.md` (Module 6, append the packaging stage after the existing Mermaid-strategy content)
+- Modify: `templates/1_to_n_slide_prompt_template.md` (append "第五階段" after "第四階段：流程圖策略", before "## 輸出格式")
+- Modify: `templates/0_to_1_slide_prompt_template.md` (same)
+
+**Interfaces:**
+- Consumes: Task 6's 4 Mermaid diagram archetypes and the brand color tokens (`#153166`, `#007583`, `#525864`, `#B91C1C`, `#FDFCFA`).
+- Produces: a new "第五階段：交付物封裝" instruction block that both templates emit, directing the executing agent (assumed to be a shell/file-system-capable environment such as Claude Code — confirmed by user) to render each Mermaid diagram to PNG and deliver a single self-contained output folder containing `gamma-prompt.md` plus the rendered PNGs, instead of leaving Mermaid rendering as a manual step for the human user.
+
+**Background:** Task 6 designed the Mermaid strategy assuming a human user would copy the Mermaid code out, render it externally (e.g. mermaid.live), and manually insert the resulting image into Gamma. The user asked whether the executing agent could instead render the diagrams itself and hand over a ready-to-use folder. Confirmed: both templates are primarily executed inside Claude Code / a shell-capable agent, so this is feasible via `@mermaid-js/mermaid-cli` (`mmdc`), invoked through `npx`. A graceful-degradation path is required for the rare case where no Node/npx is available.
+
+### Steps
+
+- [ ] **Step 1: Verify current (Red) state — no packaging instructions exist yet**
+
+Run: `grep -n "交付物封裝\|mermaid-cli\|mmdc" "templates/1_to_n_slide_prompt_template.md" "templates/0_to_1_slide_prompt_template.md" "templates/_shared-modules.md"`
+Expected: no match in any of the three files.
+
+- [ ] **Step 2: Add the packaging stage to `_shared-modules.md`'s Module 6**
+
+Find the end of `## Module 6: Mermaid 流程圖策略`'s content (immediately after its 4th Mermaid code block and the closing instruction to render externally, right before the next `---` separator or EOF, whichever the file currently has). Append (as plain markdown text, NOT wrapped in any outer fence — follow the Module 1-6 established convention):
+
+```markdown
+### 交付物封裝（Mermaid 渲染 + 統一輸出資料夾）
+
+> **前提**：本節指令假設執行此 prompt 的 agent 具備 shell／檔案系統存取能力（例如
+> Claude Code），而非單純的網頁聊天視窗。若執行環境沒有這類能力，請直接沿用上方
+> 「使用者自行用 mermaid.live 渲染」的作法，跳過本節。
+
+完成上方所有 Mermaid 圖表後，執行此 prompt 的 agent 必須：
+
+1.  建立一個輸出資料夾：`./<簡報主標題 slug 化>-slide-package/`（例如簡報標題為
+    「AI 會議記錄助理提案」，資料夾可命名為 `./ai-meeting-assistant-proposal-slide-package/`）。
+2.  將最終 Gamma Prompt（含封面頁、大綱、演講稿、雙重稽核官關卡報告）完整寫入該資料夾內的
+    `gamma-prompt.md`。
+3.  對每一段 Mermaid 圖表：
+    a.  將該圖表的 Mermaid 原始碼寫入對應的 `.mmd` 檔案（例如 `diagram-slide5.mmd`）。
+    b.  用 mermaid-cli 渲染成 PNG：
+        ```bash
+        npx -y @mermaid-js/mermaid-cli -i diagram-slideN.mmd -o diagram-slideN.png -b "#FDFCFA" -w 1600
+        ```
+        （`-b` 指定暖米白背景色以貼合品牌基調；`-w 1600` 提供適合簡報插入的解析度。）
+    c.  若渲染失敗（例如環境沒有 node/npx 或指令執行錯誤），採**優雅降級**：保留該
+        `.mmd` 檔案，並在 `gamma-prompt.md` 對應段落加註：
+        `[PNG 渲染失敗，請自行至 mermaid.live 貼上 diagram-slideN.mmd 內容手動渲染]`。
+4.  完成後，向使用者回報輸出資料夾的路徑，並附上使用說明：「請把 `gamma-prompt.md`
+    貼進 Gamma 生成簡報，再依序把資料夾內的 PNG 圖片插入對應頁面」。
+```
+
+- [ ] **Step 3: Verify Module 6's new content is present and fence-integrity is intact**
+
+Run: `grep -c "交付物封裝\|mermaid-cli" "templates/_shared-modules.md"`
+Expected: at least 2 matches (heading + the `npx` command line).
+
+Run the fence-integrity check (same as prior tasks):
+```python
+import markdown, re
+with open('templates/_shared-modules.md', encoding='utf-8') as f:
+    text = f.read()
+html = markdown.markdown(text, extensions=['fenced_code'])
+headings = re.findall(r'<h[1-6][^>]*>(.*?)</h[1-6]>', html)
+print(len(headings), 'headings found')
+```
+Expected: one more heading than before this task (the new `### 交付物封裝（Mermaid 渲染 + 統一輸出資料夾）` sub-heading), all Module 1-6 headings still present and none swallowed into a code block.
+
+- [ ] **Step 4: Add "第五階段：交付物封裝" to `templates/1_to_n_slide_prompt_template.md`**
+
+Find the end of the "第四階段：流程圖策略" section added in Task 6 (immediately before the `## 輸出格式` heading). Insert a new section between them:
+
+```markdown
+## 第五階段：交付物封裝（Mermaid 渲染 + 統一輸出資料夾）
+
+<!-- SYNC: _shared-modules.md#module-6-mermaid-流程圖策略 -->（交付物封裝段落）
+
+> **前提**：本節指令假設執行此 prompt 的 agent 具備 shell／檔案系統存取能力（例如
+> Claude Code），而非單純的網頁聊天視窗。若執行環境沒有這類能力，請直接沿用上方
+> 「使用者自行用 mermaid.live 渲染」的作法，跳過本節。
+
+完成上方所有 Mermaid 圖表後，執行此 prompt 的 agent 必須：
+
+1.  建立一個輸出資料夾：`./<簡報主標題 slug 化>-slide-package/`。
+2.  將最終 Gamma Prompt（含封面頁、大綱、演講稿、雙重稽核官關卡報告）完整寫入該資料夾內的
+    `gamma-prompt.md`。
+3.  對每一段 Mermaid 圖表：
+    a.  將該圖表的 Mermaid 原始碼寫入對應的 `.mmd` 檔案（例如 `diagram-slide5.mmd`）。
+    b.  用 mermaid-cli 渲染成 PNG：
+        ```bash
+        npx -y @mermaid-js/mermaid-cli -i diagram-slideN.mmd -o diagram-slideN.png -b "#FDFCFA" -w 1600
+        ```
+    c.  若渲染失敗，採優雅降級：保留該 `.mmd` 檔案，並在 `gamma-prompt.md` 對應段落加註：
+        `[PNG 渲染失敗，請自行至 mermaid.live 貼上 diagram-slideN.mmd 內容手動渲染]`。
+4.  完成後，向使用者回報輸出資料夾的路徑，並附上使用說明：「請把 `gamma-prompt.md`
+    貼進 Gamma 生成簡報，再依序把資料夾內的 PNG 圖片插入對應頁面」。
+```
+
+- [ ] **Step 5: Repeat Step 4 for `templates/0_to_1_slide_prompt_template.md`**
+
+Identical insertion, placed between its own "第四階段：流程圖策略" section (added in Task 6) and its own `## 輸出格式` heading.
+
+- [ ] **Step 6: Verify both templates now have the packaging stage in the correct position**
+
+Run: `grep -n "^## 第五階段\|^## 輸出格式" "templates/1_to_n_slide_prompt_template.md" "templates/0_to_1_slide_prompt_template.md"`
+Expected: for each file, the `## 第五階段` line number is smaller than the `## 輸出格式` line number.
+
+- [ ] **Step 7: Verify no emoji were introduced (this task runs after Task 8, so the zero-emoji state must be preserved)**
+
+Run the same Python emoji-count snippet from Task 8 Step 1 (or Step 7's zero-state check). Expected: all six emoji counts remain 0 in all three files — this section's own text does not introduce any (no warning/checkmark glyphs in the new content).
+
+- [ ] **Step 8: Commit**
+
+```bash
+git add templates/_shared-modules.md templates/1_to_n_slide_prompt_template.md templates/0_to_1_slide_prompt_template.md
+git commit -m "feat: add Mermaid render-to-PNG and unified output-folder packaging
+
+Extends the Mermaid diagram strategy so that when the executing agent
+has shell/file-system access (e.g. Claude Code), it renders each
+diagram to PNG via mermaid-cli and delivers gamma-prompt.md plus the
+PNGs together in one output folder, instead of leaving rendering as a
+manual step. Falls back to the existing manual-render instructions
+when no such environment is available."
+```
+
+---
+
 ## Self-Review Notes (completed while writing this plan)
 
 1. **Spec coverage**: §3.A → Task 2. §3.B → Task 3. §3.C → Task 4. §3.D → Task 6. §3.E → Task 5. §3.F → Tasks 1-6 (SYNC tags) verified in Task 7. §3.G → Task 3 Step 4/5. §3.H (added mid-execution, after Task 1 shipped) → Task 3 Steps 1/4/5/6/7. §4 ("不採用的方向") → verified negatively in Task 7 Step 5. All design-doc sections have a task.
