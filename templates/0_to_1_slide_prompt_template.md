@@ -289,6 +289,34 @@ flowchart TD
 
 ---
 
+## 第五階段：交付物封裝（Mermaid 渲染 + 統一輸出資料夾）
+
+<!-- SYNC: _shared-modules.md#module-6-mermaid-流程圖策略 -->（交付物封裝段落）
+
+> **前提**：本節指令假設執行此 prompt 的 agent 具備 shell／檔案系統存取能力（例如
+> Claude Code），而非單純的網頁聊天視窗。若執行環境沒有這類能力，請直接沿用上方
+> 「使用者自行用 mermaid.live 渲染」的作法，跳過本節。
+
+完成上方所有 Mermaid 圖表後，執行此 prompt 的 agent 必須：
+
+1.  建立一個輸出資料夾：`./<簡報主標題 slug 化>-slide-package/`。
+2.  將最終 Gamma Prompt（含封面頁、大綱、演講稿、雙重稽核官關卡報告）完整寫入該資料夾內的
+    `gamma-prompt.md`。
+3.  對每一段 Mermaid 圖表：
+    a.  將該圖表的 Mermaid 原始碼寫入對應的 `.mmd` 檔案（例如 `diagram-slide5.mmd`）。
+    b.  用 mermaid-cli 渲染成 PNG：
+
+```bash
+npx -y @mermaid-js/mermaid-cli -i diagram-slideN.mmd -o diagram-slideN.png -b "#FDFCFA" -w 1600
+```
+
+    c.  若渲染失敗，採優雅降級：保留該 `.mmd` 檔案，並在 `gamma-prompt.md` 對應段落加註：
+        `[PNG 渲染失敗，請自行至 mermaid.live 貼上 diagram-slideN.mmd 內容手動渲染]`。
+4.  完成後，向使用者回報輸出資料夾的路徑，並附上使用說明：「請把 `gamma-prompt.md`
+    貼進 Gamma 生成簡報，再依序把資料夾內的 PNG 圖片插入對應頁面」。
+
+---
+
 ## 輸出格式
 
 請依照以下 Markdown 格式輸出你的結果，禁止合併或省略任何頁面，每一頁都必須有獨立完整的區塊以保證品質標準化：
